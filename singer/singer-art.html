@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+  	<head>
+    		<meta charset="utf-8">
+    		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+    
+		<title>Teki-sites by bernadettcsanyi</title>
+    
+		<link rel="stylesheet" href="../stylesheets/styles.css">
+    		<link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+		<!--<link rel="stylesheet" href="../stylesheets/qunit.css">-->
+    		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    		<script src="../javascripts/respond.js"></script>
+   	
+		<!--[if lt IE 9]>
+      			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    		<![endif]-->
+    		<!--[if lt IE 8]>
+    			<link rel="stylesheet" href="stylesheets/ie.css">
+    		<![endif]-->
+    		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  	</head>
+  	<body>
+      		<div id="header">
+        		<nav>
+          			<li class="fork"><a href="https://github.com/bernadettcsanyi/teki-sites">View On GitHub Teki-sites</a></li>
+					<li class="fork"><a href="../index.html">HOME</a></li>
+        		</nav>
+     		 </div><!-- end header -->
+
+    		<div class="wrapper" id="wrapper">
+			<hr><hr><hr>
+			<h1> Last.fm plugin ajax és jquery segítségével <h1>
+
+			<pre style="font-size: 16px;">Last.fm plugin:
+
+A <a href="http://www.last.fm">www.last.fm</a> oldal
+egy zenéket, zenészeket, és zeneszeretőket összekötő portál,
+melyhez ajax és jquery segítségével könnyedén megírhatjuk
+saját pluginunkat.
+			</pre>
+
+		
+			<pre style="font-size: 16px;">A pluginhoz szükséges:
+
+Regisztráció <a href="https://www.last.fm/join">ITT</a>.
+Bejelentkezés.
+Tájékozódás <a href="http://www.last.fm/api">ITT</a>.
+Api hozzáférés kérése <a href="http://www.last.fm/api/account/create">ITT</a>.
+Api kód megjegyzése.
+A munka megkezdése. Segítség: <a href="http://www.last.fm/api/intro">ITT</a>.
+Egy ízléses HTML kód, és a hozzá tartozó CSS.
+JQUERY script. Letölthető <a href="http://jquery.com">INNEN</a>.
+...és a saját scriptünk.
+			</pre>
+
+		<p style="font-size: 16px;">
+			<h2>Scriptek</h2>
+			<h3>Ajax hívást kezdeményező scirpt:</h3>
+			<pre>
+(function() {
+  var Singer;
+
+  Singer = (function() {
+
+    function Singer() {}
+
+    Singer.key = "";
+    Singer.getName = function(query, callback) {
+      var url;
+      url = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist="+ query +"&api_key=6ec8aba4f0fc8dfbf49e029bc6efc71e&format=json";
+      return $.ajax({
+        dataType: "jsonp",
+        context: window,
+        data: {
+          query: query,
+          format: "json"
+        },
+        type: 'get',
+        url: url,
+        data: null,
+        success: callback,
+        crossDomain: true
+      });
+    };
+
+    return Singer;
+
+  })();
+
+  window.Singer = Singer;
+
+}).call(this);
+			</pre>
+			A getName függvény végzi a munka oroszlán részét. Itt meg kell adnunk egy URL-t, melynek részei:
+
+			Ez a Last.fm-es api-knál állandó. Más weboldalakhoz más cím tartozik.
+			<pre><li>http://ws.audioscrobbler.com/2.0/...</li></pre>
+			A metódus, amellyel dolgozni szeretnénk (lista a dokumentációban).
+			<pre><li>...?method=artist.search...</li></pre>
+			A függvény paraméteréül adott név szerinti előadó.
+			<pre><li>...&artist="+ query +"...</li></pre>
+			A generált kód, melyet kaptunk. 
+			<pre><li>...&api_key=6ec8aba4f0fc8dfbf49e029bc6efc71e...</li></pre> 
+			A "formaság".
+			<pre><li>...&format=json</li></pre>
+
+			<h3>Az adatokat feldolgozó script:</h3>
+			<pre>
+function showNames( data ) {
+	resetResults();
+	$.each(data.results.artistmatches.artist, function(key, art) {
+		$('#results').append(art.name);
+	});
+}
+			</pre>
+
+			Ahhoz, hogy ezt megértsük, nézzük meg mi is az a DATA!
+			<li>A DATA a http://ws.audioscrobbler.com/2.0/?method=artist.search&
+				artist=radiohead&api_key=6ec8aba4f0fc8dfbf49e029bc6efc71e
+				&format=json&callback=jQuery19106017033345997334_1362361398735
+				&query=radiohead&format=json&_=1362361398736
+				eredménye:</li>
+			<pre>
+jQuery19106017033345997334_1362361398735({"results":{"opensearch:Query":{"#text":"","role":"request","searchTerms":"radiohead","startPage":"1"},"opensearch:totalResults":"2904","opensearch:startIndex":"0","opensearch:itemsPerPage":"30","artistmatches":{"artist":[{"name":"Radiohead","listeners":"4012995","mbid":"a74b1b7f-71a5-4011-9441-d0b5e4122711","url":"http:\/\/www.last.fm\/music\/Radiohead","streamable":"1","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/317976.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/317976.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/317976.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/317976.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/317976\/Radiohead.jpg","size":"mega"}]},{"name":"El Lele de Los Van Van feat. Radiohead (samples)","listeners":"16765","mbid":"","url":"http:\/\/www.last.fm\/music\/El+Lele+de+Los+Van+Van+feat.+Radiohead+(samples)","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/29782447.png","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/29782447.png","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/29782447.png","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/29782447.png","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/29782447\/El+Lele+de+Los+Van+Van+feat+Radiohead+samples+KeepStatsClean.png","size":"mega"}]},{"name":"Radiohead VS Dave Brubeck","listeners":"5325","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+VS+Dave+Brubeck","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/25951913.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/25951913.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/25951913.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/25951913.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/25951913\/Radiohead+VS+Dave+Brubeck+3321829766_c8b7cb0d16_o.jpg","size":"mega"}]},{"name":"The Smashing Pumpkins, Radiohead & Smashmouth","listeners":"4040","mbid":"","url":"http:\/\/www.last.fm\/music\/The+Smashing+Pumpkins,+Radiohead+&+Smashmouth","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/85922821.png","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/85922821.png","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/85922821.png","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/85922821.png","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/85922821\/The+Smashing+Pumpkins+Radiohead++Smashmouth+Keep+stats+clean.png","size":"mega"}]},{"name":"Radiohead & El Lele","listeners":"3579","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+&+El+Lele","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/343487.png","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/343487.png","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/343487.png","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/343487.png","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/343487\/Radiohead++El+Lele.png","size":"mega"}]},{"name":"Radiohead Tribute","listeners":"3093","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+Tribute","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Lele De Los Van Van\/Radiohead","listeners":"2154","mbid":"","url":"http:\/\/www.last.fm\/music\/Lele+De+Los+Van+Van%2FRadiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/125440.png","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/125440.png","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/125440.png","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/125440.png","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/125440\/Lele+De+Los+Van+VanRadiohead.png","size":"mega"}]},{"name":"Dub Tribute To Radiohead","listeners":"2102","mbid":"","url":"http:\/\/www.last.fm\/music\/Dub+Tribute+To+Radiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/797883.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/797883.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/797883.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/797883.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/797883\/Dub+Tribute+To+Radiohead.jpg","size":"mega"}]},{"name":"Radiohead's Thom Yorke & Jonny Greenwood","listeners":"1530","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead%27s+Thom+Yorke+&+Jonny+Greenwood","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/81422.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/81422.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/81422.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/81422.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/81422\/Radioheads+Thom+Yorke++Jonny+Greenwood.jpg","size":"mega"}]},{"name":"The Bluegrass Tribute to Radiohead","listeners":"1355","mbid":"","url":"http:\/\/www.last.fm\/music\/The+Bluegrass+Tribute+to+Radiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/26188579.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/26188579.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/26188579.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/26188579.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/26188579\/The+Bluegrass+Tribute+to+Radiohead+folder.jpg","size":"mega"}]},{"name":"Louis Armstrong vs.Radiohead","listeners":"1249","mbid":"","url":"http:\/\/www.last.fm\/music\/Louis+Armstrong+vs.Radiohead","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Radiohead+Ani DeFranco","listeners":"1147","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead%252BAni+DeFranco","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Kanye West vs. Radiohead","listeners":"992","mbid":"","url":"http:\/\/www.last.fm\/music\/Kanye+West+vs.+Radiohead","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Radiohead\/Michael Stipe","listeners":"961","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead%2FMichael+Stipe","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"The Verve & Radiohead","listeners":"920","mbid":"","url":"http:\/\/www.last.fm\/music\/The+Verve+&+Radiohead","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Louis Armstrong VS Radiohead","listeners":"868","mbid":"","url":"http:\/\/www.last.fm\/music\/Louis+Armstrong+VS+Radiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/55866969.png","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/55866969.png","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/55866969.png","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/55866969.png","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/55866969\/Louis+Armstrong+VS+Radiohead+what+a+wonderful+surprise.png","size":"mega"}]},{"name":"Radiohead - Eric Gorfain","listeners":"800","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+-+Eric+Gorfain","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/8860815.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/8860815.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/8860815.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/8860815.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/8860815\/Radiohead++Eric+Gorfain+eric+golfon.jpg","size":"mega"}]},{"name":"Thom Yorke and Johnny Greenwood (Radiohead)","listeners":"761","mbid":"","url":"http:\/\/www.last.fm\/music\/Thom+Yorke+and+Johnny+Greenwood+(Radiohead)","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/24619987.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/24619987.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/24619987.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/24619987.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/24619987\/Thom+Yorke+and+Johnny+Greenwood+Radiohead+folder.jpg","size":"mega"}]},{"name":"Karaoke - Radiohead","listeners":"721","mbid":"","url":"http:\/\/www.last.fm\/music\/Karaoke+-+Radiohead","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Radiohead vs. Eric B. & Rakim","listeners":"732","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+vs.+Eric+B.+&+Rakim","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Rossocenere (afterhours, marlene kunz, radiohead, negramaro, verdena)","listeners":"727","mbid":"","url":"http:\/\/www.last.fm\/music\/Rossocenere+(afterhours,+marlene+kunz,+radiohead,+negramaro,+verdena)","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Lele De Los Van Van; Radiohead","listeners":"721","mbid":"","url":"http:\/\/www.last.fm\/music\/Lele+De+Los+Van+Van;+Radiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/32780049.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/32780049.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/32780049.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/32780049.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/32780049\/Lele+De+Los+Van+Van+Radiohead+rhytin.jpg","size":"mega"}]},{"name":"\u00b5\u00e7\u00cc\u00a8\u00cb\u00be\u00c1\u00ee(Radiohead)","listeners":"619","mbid":"","url":"http:\/\/www.last.fm\/music\/%C2%B5%C3%A7%C3%8C%C2%A8%C3%8B%C2%BE%C3%81%C3%AE(Radiohead)","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Massive Attack, Portishead, Telepopmusik, bjok, radiohead, moby, audiobullys","listeners":"645","mbid":"","url":"http:\/\/www.last.fm\/music\/Massive+Attack,+Portishead,+Telepopmusik,+bjok,+radiohead,+moby,+audiobullys","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Radiohead & Sigur Ros","listeners":"583","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+&+Sigur+Ros","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/24337607.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/24337607.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/24337607.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/24337607.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/24337607\/Radiohead++Sigur+Ros+mercethomjonsi.jpg","size":"mega"}]},{"name":"Radiohead x SALEM","listeners":"581","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+x+SALEM","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Bj\u00f6rk & Radiohead","listeners":"578","mbid":"","url":"http:\/\/www.last.fm\/music\/Bj%C3%B6rk+&+Radiohead","streamable":"0","image":[{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34\/153388.jpg","size":"small"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64\/153388.jpg","size":"medium"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/153388.jpg","size":"large"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/252\/153388.jpg","size":"extralarge"},{"#text":"http:\/\/userserve-ak.last.fm\/serve\/_\/153388\/Bjrk++Radiohead.jpg","size":"mega"}]},{"name":"Radiohead, U-God and dj BC","listeners":"608","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead,+U-God+and+dj+BC","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Jack Conte Covering Chopin and Radiohead","listeners":"585","mbid":"","url":"http:\/\/www.last.fm\/music\/Jack+Conte+Covering+Chopin+and+Radiohead","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]},{"name":"Radiohead (Remix: Holy Fuck)","listeners":"527","mbid":"","url":"http:\/\/www.last.fm\/music\/Radiohead+(Remix:+Holy+Fuck)","streamable":"0","image":[{"#text":"","size":"small"},{"#text":"","size":"medium"},{"#text":"","size":"large"},{"#text":"","size":"extralarge"},{"#text":"","size":"mega"}]}]},"@attr":{"for":"radiohead"}}});
+			</pre>
+			A kuszaságot kibogozva megfigyelhetjük a DATA felépítését:
+			<li>Először is van egy RESULTS, ami többek között tartalmazza</li>
+			<li>az artistmatches-t (a találatokat), amiben találhatóak</li>
+			<li>az artist-ok (előadók), melyek rendelkeznek</li>
+			<li>névvel (name), fotóval (image), url-el, stb.</li>
+			Így könnyen beláthatjuk, hogy scriptünk nem tartalmaz semmi ördöngősséget, csak az adatokat nyeri ki a DATA-ból.
+
+			Minden metódusnak megvan a maga felépítése, és az ajax híváskor beírt url-től függően különböző típusú információkhoz juthatunk a DATA-ból a megfelelő script segítségével.
+
+		</p>
+
+		
+
+			
+    		</div>
+   		<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  	</body>
+</html>
+

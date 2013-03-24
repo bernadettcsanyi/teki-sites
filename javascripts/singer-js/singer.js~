@@ -1,0 +1,130 @@
+(function()
+{
+
+	var Singer;
+	
+	Singer = function()
+	{
+		function Singer(){}
+
+		Singer.key = "";
+
+		Singer.getName = function(query, callback)
+		{
+			var url;
+			url = "http://www.last.fm/search?q=&type=artist
+			
+			return $.ajax
+			({
+				dataType: "jsonp",
+				context: window,
+				jsonp: "cb",
+				data:
+				{
+					query: query,
+					format: "json"
+				},
+				type: 'get',
+				url: url,
+				data: null,
+				succes: callback,
+				crossDomain: true
+			});
+		};
+
+		Singer.getImage = function(name, callback)
+		{
+			var url;
+			url = "www.last.fm/music/" + name
+			
+			return $.ajax
+			({
+				dataType: "jsonp",
+				url: url,
+				data: null,
+				succes: callback,
+				crossDomain: true
+			});
+		};
+		
+		return Singer;
+	})();
+	window.Singer = Singer;
+
+}).call(this);
+
+
+
+
+
+
+
+
+/*$.widget("ui.searchboxautocomplete", $.ui.autocomplete,
+{
+	_create: function()
+	{
+		
+	},
+
+	_init: function()
+	{
+		$.ui.autocomplete.prototype._init.apply(this, arguments);
+		this.element.bint("searchboxautoccompleteclose", function()
+		{
+			self.options.offeringSecondLevel = false;
+		});
+	},
+
+	options:
+	{
+		select: function(event, ui)
+		{
+
+		},
+		chace: 
+		{
+
+		},
+		autocompleteRows: [],
+		separator: ": ",
+	}
+}
+
+$("#search")
+	.setSearchText(autocompleteRows)
+	.searchboxautocomplete
+	({
+		autocompleteRows: autocompleteRows,
+		source: function(request, response)
+		{
+			var term = $.ui.searchboxautocomplete.extractLast(request.term);
+			var data = this.options.getCachedData(term);
+			if(data!=null)
+			{
+				response(data);
+				return true;
+			}
+
+			var that = this;
+			this.options.lastXhr = $getJson
+			("http://www.last.fm/search",
+			{term:term, acRows:JSON.stringify(this.options.autocompleteRows)},
+			function(data, status, xhr)
+			{
+				that.options.setCachedData(term, data);
+				if (xhr == that.options.lastXhr)
+				{
+					response(data);
+				}
+			})
+		},
+
+		search: function()
+		{
+			if(term.length < 2)
+			{
+				return false;
+			}
+		}
+	})*/

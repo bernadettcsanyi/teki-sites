@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FizzBuzz test</title>
+  <link rel="stylesheet" href="../stylesheets/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../javascripts/qunit.js"></script>
+
+	<div class="wrapper" id="wrapper">
+			<hr><hr><hr>
+			<h1> Fizz Buzz Bizz <h1>
+
+			<pre style="font-size: 16px;">A számokat láthatod 1-től egy megadott pozitív számig.
+De van egy kis csavar!
+
+Azok a számok helyett, amelyek oszthatók:
+	3-al, "Fizz",
+	5-el, "Buzz",
+	7-el, "Bazz", 
+	3-al és 5-el, "FizzBuzz"
+	3-al, 5-el, és 7-el, "FizzBuzzBazz"
+jelenik meg.</pre>
+
+			<p> Adj meg egy számot! </p>
+			<input type="number" name="megadott" id="megadott" size="6">
+					<input type="submit" name="szamol" class="menu" id="szamol" value="Számolj!" onclick=" nr=document.getElementById('megadott').value; fizzbuzz(nr);">
+			
+			<script src="../javascripts/fizzbuzz-js/fizzbuzz.js"></script>	
+			<!--<script src="../javascripts/fizzbuzz-js/fizzbuzz-test.js"></script>-->
+
+			
+    		</div>
+
+  <script src="../javascripts/fizzbuzz-js/fizzbuzz.js"></script>
+  <script src="../javascripts/fizzbuzz-js/fizzbuzz-test.js"></script>
+</body>
+</html>

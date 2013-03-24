@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  	<head>
+    		<meta charset="utf-8">
+    		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+    
+		<title>Teki-sites by bernadettcsanyi</title>
+    
+		<link rel="stylesheet" href="../stylesheets/styles.css">
+    		<link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+		<!--<link rel="stylesheet" href="../stylesheets/qunit.css">-->
+    		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    		<script src="../javascripts/respond.js"></script>
+		<!--<script src="../javascripts/qunit.js"></script>-->
+   	
+		<!--[if lt IE 9]>
+      			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    		<![endif]-->
+    		<!--[if lt IE 8]>
+    			<link rel="stylesheet" href="stylesheets/ie.css">
+    		<![endif]-->
+    		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  	</head>
+  	<body>
+		<!--<div id="qunit"></div>
+  		<div id="qunit-fixture"></div>-->
+      		<div id="header">
+        		<nav>
+          			<li class="fork"><a href="https://github.com/bernadettcsanyi/teki-sites">View On GitHub Teki-sites</a></li>
+				<li class="fork"><a href="../index.html">HOME</a></li>
+				<li class="fork"><a href="fizzbuzz-test.html">TEST it with QUNIT!</a></li>
+				<li class="fork"><a href="fizzbuzz-art.html">Articel</a></li>
+        		</nav>
+     		 </div><!-- end header -->
+
+    		<div class="wrapper" id="wrapper">
+			<hr><hr><hr>
+			<h1> Fizz Buzz Bizz <h1>
+
+			<pre style="font-size: 16px;">A számokat láthatod 1-től egy megadott pozitív számig.
+De van egy kis csavar!
+
+Azok a számok helyett, amelyek oszthatók:
+	3-al, "Fizz",
+	5-el, "Buzz",
+	7-el, "Bazz", 
+	3-al és 5-el, "FizzBuzz",
+	3-al, 5-el és 7-el, "FizzBuzzBazz"
+jelenik meg.</pre>
+
+			<p> Adj meg egy számot! </p>
+			<input type="number" name="megadott" id="megadott" size="6">
+					<input type="submit" name="szamol" class="menu" id="szamol" value="Számolj!" onclick=" nr=document.getElementById('megadott').value; fizzbuzz(nr);">
+			
+			<script src="../javascripts/fizzbuzz-js/fizzbuzz.js"></script>	
+			<!--<script src="../javascripts/fizzbuzz-js/fizzbuzz-test.js"></script>-->
+
+			
+    		</div>
+   		<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  	</body>
+</html>
+

@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+  	<head>
+    		<meta charset="utf-8">
+    		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+    
+		<title>Teki-sites by bernadettcsanyi</title>
+    
+		<link rel="stylesheet" href="../stylesheets/styles.css">
+    		<link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+		<!--<link rel="stylesheet" href="../stylesheets/qunit.css">-->
+    		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    		<script src="../javascripts/respond.js"></script>
+   	
+		<!--[if lt IE 9]>
+      			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    		<![endif]-->
+    		<!--[if lt IE 8]>
+    			<link rel="stylesheet" href="stylesheets/ie.css">
+    		<![endif]-->
+    		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  	</head>
+  	<body>
+      		<div id="header">
+        		<nav>
+          			<li class="fork"><a href="https://github.com/bernadettcsanyi/teki-sites">View On GitHub Teki-sites</a></li>
+				<li class="fork"><a href="../index.html">HOME</a></li>
+				<li class="fork"><a href="fizzbuzz-test.html">TEST it with QUNIT!</a></li>
+        		</nav>
+     		 </div><!-- end header -->
+
+    		<div class="wrapper" id="wrapper">
+			<hr><hr><hr>
+			<h1> Fizz Buzz Bazz teszteslése QUNIT segítségével <h1>
+
+			<pre style="font-size: 16px;">Qunit:
+
+A Qunit JavaSrciptek tesztelésére alkalmas,
+HTML oldalakba beágyazható keretrendszer,
+melynek használata könnyen elsajátítható.
+Bővebb információ angolul elérhető <a href="http://qunitjs.com">ITT</a></pre>
+
+		
+			<pre style="font-size: 16px;">A tesztelendő kódrészlet:
+
+function fizzbuzz(nr)
+{
+	var kiir;
+	var ret = "";
+	if(nr<1)
+	{
+		ret="Csak 0-nál nagyobb számot kérek!";
+	} else {
+		for(i=1; i<=nr; i=i+1)
+		{
+		
+			if(((i%3)==0) && ((i%5)==0) && ((i%7)==0))
+			{
+				kiir="FizzBuzzBazz";
+			}else if(((i%3)==0) && ((i%5)==0))
+			{
+				kiir="FizzBuzz";
+			} else if((i%3)==0){
+				kiir="Fizz";
+			} else if ((i%5)==0){
+				kiir="Buzz";
+			} else if ((i%7)==0){
+				kiir="Bazz";
+			} else {
+				kiir=i;
+			}
+
+			ret= ret + kiir + ", ";
+		}
+		
+	}
+	var p=document.createElement("li");
+	var node=document.createTextNode(ret);
+	p.appendChild(node);
+
+	var element=document.getElementById("wrapper");
+	element.appendChild(p);	
+
+	return ret;
+}
+</pre>
+
+		<p style="font-size: 16px;">
+			<h2>Ciklus:</h2>
+			1-től a megadott számig minden lépésben megvizsgálom
+			az i értékét a feltételek szerint.
+			<pre>
+for(i=1; i<=nr; i=i+1)
+{ FELTÉTELEK }
+			</pre>
+
+			<h2>Változók:</h2>
+			A kiir változóban tároljuk a feltételek által meghatározott értéket.
+			<pre>
+var kiir;
+			</pre>
+			A ret változó lesz a visszatérési értéke a függvénynek,
+			melynek értéke a 
+			<pre>
+var ret = "";
+			</pre>
+
+			A ciklus futása közben a ret értékét folyamatosan bővítjük az aktuális kiir értékkel.
+			<pre>
+ret= ret + kiir + ", ";
+			</pre>
+
+			<h2>Feltételek:</h2>
+			A számnak 0-nál nagyobbnak kell lennie
+			<pre>
+if(nr<1)
+{ ret="Csak 0-nál nagyobb számot kérek!";} 
+			</pre>
+			Ha 3-al, 5-el és 7-el is osztható az i szám, akkor kiírjuk: FizzBuzzBazz.
+			<pre>
+if(((i%3)==0) && ((i%5)==0) && ((i%7)==0))
+{ kiir="FizzBuzzBazz";}
+			</pre>
+			Ha csak 3-al és 5-el osztható az i szám, akkor a FizzBuzz szó kerül kiírásra.
+			<pre>
+if(((i%3)==0) && ((i%5)==0))
+{ kiir="FizzBuzz";} 
+			</pre>
+			Ha az i szám csupán 3-al osztható, a kiírás Fizz lesz.
+			<pre>
+if((i%3)==0)
+{ kiir="Fizz";}
+			</pre>
+			Ha az i szám 5-el osztható, akkor a kiir értéke Buzz lesz.
+			<pre>
+if ((i%5)==0)
+{ kiir="Buzz";} 
+			</pre>
+			Ha az i szám 7-el osztható, akkor Bazz lesz a kiir értéke.
+			<pre>
+if ((i%7)==0)
+{ kiir="Bazz";}
+			</pre>
+			Minden más esetben az i szám átadódik a kiir értékének.
+			<pre>
+else { kiir=i;}
+			</pre>
+			
+		</p>
+
+		<p style="font-size: 16px;">
+			<h2>A teszteléshez szükséges:</h2>
+			Letölteni, elmenteni:
+			<li><a href="http://code.jquery.com/qunit/qunit-1.11.0.js">qunit.js</a></li>
+			<li><a href="http://code.jquery.com/qunit/qunit-1.11.0.css">qunit.css</a></li>
+			Megírni:
+			<li>test.js</li>
+			Minimális HTML kód tartalmazza:
+			<li>qunit.css</li>
+			<li>qunit.js</li>
+			<li>egy DIV, melynek id-je: "qunit"</li>
+			<li>egy (másik) DIV, melynek id-je: "qunit-fixture"</li>
+			<li>sajatScript.js</li>
+			<li>teszt.js</li>
+
+			<h2>teszt.js tartalma:</h2>
+			Van egy függvényünk, ami tartalmazza a teszteseteket:
+			<pre>
+(function()
+{ TESZTESETEK ).call(this);
+			</pre>
+
+			Egy lehetséges teszteset:
+			<pre>
+test("1==1", function()
+{ return equal(fizzbuzz("1"), "1"); });
+			</pre>
+			Itt a test első paraméterébe beírhatjuk a teszt tulajdonságát, melyről megkülönböztethetjük a többitől.
+			Jelen példában: "1==1".
+			A második paraméter egy függvény, amelynek egy visszatérési értéke van.
+			A visszatérési érték megvizsgálja, hogy a függvényünk adott paraméterekkel  a megadott eredményt adja-e.
+			Fenti példában: equal(fizzbuzz("1"), "1") Azaz a fizzbuzz függvényünk 1-es paraméterrel megadva visszatérési értéknek "1"-et fog-e visszaadni.
+			
+		</p>	
+
+			
+    		</div>
+   		<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  	</body>
+</html>
+
