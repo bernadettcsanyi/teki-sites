@@ -11,6 +11,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-min');
   // Project configuration.
   grunt.initConfig({
     test: {
@@ -22,14 +23,9 @@ module.exports = function(grunt) {
         src: ['javascripts/fizzbuzz-js/fizzbuzz-test.js', 'javascripts/fizzbuzz-js/fizzbuzz.js'],
         dest: 'javascripts/fizzbuzz-js/fizzplustest.js'
       }
-    }
+    },
 
-    min: {
-      dist: {
-        src: ['javascripts/fizzbuzz-js/fizzplustest.js'],
-        dest: ['javascripts/fizzplustest.js']
-      }
-    }
+    
 
     lint: {
       all: [
@@ -49,6 +45,7 @@ module.exports = function(grunt) {
         tasks: 'lint test qunit'
       }
     },
+
     jshint: {
       options: {
         curly: true,
@@ -70,6 +67,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'concat min lint test qunit watch');
+  grunt.registerTask('default', 'concat lint test qunit watch');
 
 };
